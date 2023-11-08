@@ -12,7 +12,7 @@ pub async fn get(_id: &str) -> Result<String, reqwest::Error> {
 
     let access_token = std::env::var("VAULT_ACCESS_TOKEN").expect("VAULT_ACCESS_TOKEN must be set");
 
-    println!("ID = {}", _id );
+    // println!("ID = {}", _id );
     let payload = json!({
         "id": _id
     });
