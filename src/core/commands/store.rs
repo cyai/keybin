@@ -3,7 +3,7 @@ use serde_json::{json, Value};
 use dotenv::dotenv;
 
 pub async fn store(
-    _secret: Option<String>, 
+    _secret: String, 
     _type: Option<String>, 
     _name: Option<String>, 
     _folder: Option<String>, 

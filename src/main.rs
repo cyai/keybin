@@ -68,8 +68,8 @@ async fn main(){
         io::stdin().read_line(&mut name).expect("Failed to read secret");
         let name = name.trim();
 
-        let result = store(Some(secret.to_string()), Some("secret".to_string()), Some(name.to_string()), Some("/personal".to_string()), None).await;
-        
+        let result = store(secret.to_string(), Some("secret".to_string()), Some(name.to_string()), Some("/personal".to_string()), None).await;
+
         println!("{:?}", result);
     }
  
