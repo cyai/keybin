@@ -2,10 +2,11 @@ mod core {
     pub mod commands {
         pub mod get;
         pub mod list;
+        pub mod store;
     }
 }
 
-use core::commands::{get::get, list::list};
+use core::commands::{get::get, list::list, store::store};
 use dotenv::dotenv;
 use std::io;
 use serde_json::Value;
@@ -55,6 +56,21 @@ async fn main(){
             eprintln!("Failed to retrieve data from the service.");
         }
 
+    } else if service == "store" {
+        let mut secret = String::new();
+        let mut name = String::new();
+
+        println!("Enter the name: ");
+        io::stdin().read_line(&mut secret).expect("Failed to read secret name");
+        let secret = secret.trim();
+
+        println!("Enter the secret: ");
+        io::stdin().read_line(&mut name).expect("Failed to read secret");
+        let name = name.trim();
+
+        let result = store(Some(secret.to_string()), Some("secret".to_string()), Some(name.to_string()), Some("/personal".to_string()), None).await;
+        
+        println!("{:?}", result);
     }
  
     
