@@ -4,10 +4,11 @@ mod core {
         pub mod list;
         pub mod store;
         pub mod update;
+        pub mod delete;
     }
 }
 
-use core::commands::{get::get, list::list, store::store, update::update};
+use core::commands::{get::get, list::list, store::store, update::update, delete::delete};
 use dotenv::dotenv;
 use std::io;
 use serde_json::Value;
@@ -86,6 +87,22 @@ async fn main(){
             println!("Status: {:?}", result["status"].as_str().unwrap());
             println!("Summary: {:?}", result["summary"].as_str().unwrap());
         }
+    } else if service == "delete" {
+        let mut secret_id = String::new();
+
+        println!("Enter the secret id: ");
+        io::stdin().read_line(&mut secret_id).expect("Failed to read secret id");
+        let secret_id = secret_id.trim();
+
+        let result = delete(secret_id.to_string()).await;
+
+        // println!("{:?}", result);
+        if let Ok(json_result) = result{
+            let result: Value = serde_json::from_str(&json_result).unwrap();        
+            println!("Status: {:?}", result["status"].as_str().unwrap());
+            println!("Summary: {:?}", result["summary"].as_str().unwrap());
+        }
+
     } else {
         println!("Invalid service");
     }
