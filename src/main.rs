@@ -1,4 +1,3 @@
-
 mod core {
     pub mod commands {
         pub mod get;
@@ -181,14 +180,6 @@ async fn main(){
                     println!("Summary: {:?}", result["summary"].as_str().unwrap_or("-"));
                 }
             }
-            
-        
-        // if let Ok(json_result) = result{
-        //     let result: Value = serde_json::from_str(&json_result).unwrap();        
-        //     println!("Status: {:?}", result["status"].as_str().unwrap_or("!! No status found !!"));
-        //     println!("Summary: {:?}", result["summary"].as_str().unwrap_or("!! No summary found !!"));
-        // }
-
     },
  } 
 
