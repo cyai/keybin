@@ -24,8 +24,24 @@ async fn main(){
     match args.subcmd {
 
     SubCommand::Get(_get)=>{
+        
         let result = get(&_get.secret_id).await;
-        println!("{:?}", result);
+        
+        if let Ok(json_result) = result {
+            if json_result.contains("403") {
+                println!("Deletion failed with a 403 error: Forbidden");
+            } else if json_result.contains("400") {
+                println!("Deletion failed with a 400 error: Bad Request");
+            } else if json_result.contains("404") {
+                println!("Deletion failed with a 404 error: Not Found");
+            } else if json_result.contains("500") {
+                println!("Deletion failed with a 500 error: Internal Server Error");
+            } else {
+                let result: Value = serde_json::from_str(&json_result).unwrap();
+                let name = result["result"]["current_version"]["secret"].as_str().unwrap_or("-");
+                println!("{:?}", name)
+            } 
+        }
     },
 
     SubCommand::List(_list) => {
@@ -53,24 +69,32 @@ async fn main(){
         ).await;
 
         if let Ok(json_result) = result{
-                    let result: Value = serde_json::from_str(&json_result).unwrap();
-                    // let items = result["result"]["items"].as_array().ok_or("No items found");
-                    if let Some(items) = result["result"]["items"].as_array(){
-                        for item in items{
-                            let name = item["name"].as_str().unwrap_or("!! No name found !!");
-                            let key_type = item["type"].as_str().unwrap_or("!! No type found !!");
-                            let created = item["created_at"].as_str().unwrap_or("!! No created date found !!");
-                            let state = item["current_version"]["state"].as_str().unwrap_or("!! No status found !!");
+            if json_result.contains("403") {
+                println!("Deletion failed with a 403 error: Forbidden");
+            } else if json_result.contains("400") {
+                println!("Deletion failed with a 400 error: Bad Request");
+            } else if json_result.contains("404") {
+                println!("Deletion failed with a 404 error: Not Found");
+            } else if json_result.contains("500") {
+                println!("Deletion failed with a 500 error: Internal Server Error");
+            } else{
+                let result: Value = serde_json::from_str(&json_result).unwrap();
+                // let items = result["result"]["items"].as_array().ok_or("No items found");
+                if let Some(items) = result["result"]["items"].as_array(){
+                    for item in items{
+                        let name = item["name"].as_str().unwrap_or("-");
+                        let key_type = item["type"].as_str().unwrap_or("-");
+                        let created = item["created_at"].as_str().unwrap_or("-");
+                        let state = item["current_version"]["state"].as_str().unwrap_or("-");
         
-                            println!("Name: {} \nType: {} \nCreated: {} \nState: {}\n", name, key_type, created, state);
-                            println!("-------------------------------------------------");
-                        }
-                    } else {
-                        println!("No items found");
+                        println!("Name: {} \nType: {} \nCreated: {} \nState: {}\n", name, key_type, created, state);
+                        println!("-------------------------------------------------");
                     }
                 } else {
-                    eprintln!("Failed to retrieve data from the service.");
+                    println!("No items found");
                 }
+            }
+        }
     },
 
     SubCommand::Store(_store) => {
@@ -91,9 +115,20 @@ async fn main(){
 
         // println!("{:?}", result);
         if let Ok(json_result) = result{
-            let result: Value = serde_json::from_str(&json_result).unwrap();        
-            println!("Status: {:?}", result["status"].as_str().unwrap_or("!! No status found !!"));
-            println!("Summary: {:?}", result["summary"].as_str().unwrap_or("!! No summary found !!"));
+            if json_result.contains("403") {
+                println!("Deletion failed with a 403 error: Forbidden");
+            } else if json_result.contains("400") {
+                println!("Deletion failed with a 400 error: Bad Request");
+            } else if json_result.contains("404") {
+                println!("Deletion failed with a 404 error: Not Found");
+            } else if json_result.contains("500") {
+                println!("Deletion failed with a 500 error: Internal Server Error");
+            }
+            else {
+                let result: Value = serde_json::from_str(&json_result).unwrap();        
+                println!("Status: {:?}", result["status"].as_str().unwrap_or("-"));
+                println!("Summary: {:?}", result["summary"].as_str().unwrap_or("-"));
+            }
         }
 
     },
@@ -108,20 +143,51 @@ async fn main(){
         let result = update(id, name.map(|s| s.to_string()),folder.map(|s| s.to_string()), metadata.map(|s| s.to_string()),tags.map(|s| s.to_string())).await;
 
         if let Ok(json_result) = result{
-            let result: Value = serde_json::from_str(&json_result).unwrap();        
-            println!("Status: {:?}", result["status"].as_str().unwrap_or("!! No status found !!"));
-            println!("Summary: {:?}", result["summary"].as_str().unwrap_or("!! No summary found !!")); 
+            if json_result.contains("403") {
+                println!("Deletion failed with a 403 error: Forbidden");
+            } else if json_result.contains("400") {
+                println!("Deletion failed with a 400 error: Bad Request");
+            } else if json_result.contains("404") {
+                println!("Deletion failed with a 404 error: Not Found");
+            } else if json_result.contains("500") {
+                println!("Deletion failed with a 500 error: Internal Server Error");
+            }
+            else {
+                let result: Value = serde_json::from_str(&json_result).unwrap();        
+                println!("Status: {:?}", result["status"].as_str().unwrap_or("-"));
+                println!("Summary: {:?}", result["summary"].as_str().unwrap_or("-"));
+            }
         }
 
     },
 
     SubCommand::Delete(_delete) => {
         let result = delete(_delete.secret_id).await;
-        if let Ok(json_result) = result{
-            let result: Value = serde_json::from_str(&json_result).unwrap();        
-            println!("Status: {:?}", result["status"].as_str().unwrap_or("!! No status found !!"));
-            println!("Summary: {:?}", result["summary"].as_str().unwrap_or("!! No summary found !!"));
-        }
+        
+
+        if let Ok(json_result) = result {
+                if json_result.contains("403") {
+                    println!("Deletion failed with a 403 error: Forbidden");
+                } else if json_result.contains("400") {
+                    println!("Deletion failed with a 400 error: Bad Request");
+                } else if json_result.contains("404") {
+                    println!("Deletion failed with a 404 error: Not Found");
+                } else if json_result.contains("500") {
+                    println!("Deletion failed with a 500 error: Internal Server Error");
+                }
+                else {
+                    let result: Value = serde_json::from_str(&json_result).unwrap();        
+                    println!("Status: {:?}", result["status"].as_str().unwrap_or("-"));
+                    println!("Summary: {:?}", result["summary"].as_str().unwrap_or("-"));
+                }
+            }
+            
+        
+        // if let Ok(json_result) = result{
+        //     let result: Value = serde_json::from_str(&json_result).unwrap();        
+        //     println!("Status: {:?}", result["status"].as_str().unwrap_or("!! No status found !!"));
+        //     println!("Summary: {:?}", result["summary"].as_str().unwrap_or("!! No summary found !!"));
+        // }
 
     },
  } 

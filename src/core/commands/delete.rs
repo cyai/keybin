@@ -21,6 +21,7 @@ pub async fn delete(_id: String) -> Result<String, reqwest::Error>{
         .send()
         .await?;
 
+    // println!("Response: {:?}", response);
     if response.status().is_success(){
         let text = response.text().await?;
         let text: Value = serde_json::from_str(&text).unwrap();

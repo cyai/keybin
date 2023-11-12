@@ -29,7 +29,7 @@ pub async fn get(_id: &str) -> Result<String, reqwest::Error> {
     if response.status().is_success(){
         let text = response.text().await?;
         let text: Value = serde_json::from_str(&text).unwrap();
-        return Ok(text["result"]["current_version"]["secret"].to_string());
+        return Ok(text.to_string());
     } else {    
         println!("Response failed: {:?}", response.status());
         return Ok(format!("Response failed: {:?}", response.status()));
