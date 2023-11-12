@@ -1,196 +1,87 @@
-use clap::{crate_authors, crate_description, crate_name, crate_version, App, Arg};
+use clap::Parser;
 
-pub fn build() -> App {
-    App::new(crate_name!())
-    .version(crate_version!())
-    .author(crate_authors!())
-    .about(crate_description!())
-    .subcommand(
-        App::new("get")
-            .about("Get a secret from the vault")
-            .arg(Arg::with_name("id")
-                    .short("i")
-                    .long("id")
-                    .value_name("SECRET_ID")
-                    .help("The name of the secret to get")
-                    .required(true)
-                    .index(1),
-            )
-    )
-    .subcommand(
-        App::new("store")
-            .about("Store a secret into the vault")
-            .arg(Arg::with_name("secret")
-                    .short("s")
-                    .long("secret")
-                    .value_name("SECRET")
-                    .help("The secret to put")
-                    .required(true)
-                    .index(1),
-            )
-            .arg(Arg::with_name("type")
-                    .short("t")
-                    .long("type")
-                    .value_name("TYPE")
-                    .help("The type of secret to store")
-                    .required(false)
-                    .index(2),
-            )
-            .arg(Arg::with_name("name")
-                    .short("n")
-                    .long("name")
-                    .value_name("NAME")
-                    .help("The name of the secret to store")
-                    .required(false)
-                    .index(3),
-            )
-            .arg(Arg::with_name("folder")
-                    .short("f")
-                    .long("folder")
-                    .value_name("FOLDER")
-                    .help("The folder to store the secret in")
-                    .required(false)
-                    .index(4),
-            )
-            .arg(Arg::with_name("metadata")
-                    .short("m")
-                    .long("metadata")
-                    .value_name("METADATA")
-                    .help("The metadata to store with the secret")
-                    .required(false)
-                    .index(5),
-            )
-    )
-    .subcommand(
-        App::new("update")
-            .about("Update a secret in the vault")
-            .arg(Arg::with_name("id")
-                    .short("i")
-                    .long("id")
-                    .value_name("SECRET_ID")
-                    .help("The name of the secret to update")
-                    .required(true)
-                    .index(1),
-            )
-            .arg(Arg::with_name("name")
-                    .short("n")
-                    .long("name")
-                    .value_name("NAME")
-                    .help("The name of the secret to update")
-                    .required(false)
-                    .index(2),
-            )
-            .arg(Arg::with_name("folder")
-                    .short("f")
-                    .long("folder")
-                    .value_name("FOLDER")
-                    .help("The folder to store the secret in")
-                    .required(false)
-                    .index(3),
-            )
-            .arg(Arg::with_name("metadata")
-                    .short("m")
-                    .long("metadata")
-                    .value_name("METADATA")
-                    .help("The metadata to store with the secret")
-                    .required(false)
-                    .index(4),
-            )
-            .arg(Arg::with_name("tags")
-                    .short("t")
-                    .long("tags")
-                    .value_name("TAGS")
-                    .help("The tags to store with the secret")
-                    .required(false)
-                    .index(5),
-            )
-    )
-    .subcommand(
-        App::new("list")
-            .about("List secrets in the vault")
-            .arg(Arg::with_name("folder")
-                    .short("f")
-                    .long("folder")
-                    .value_name("FOLDER")
-                    .help("The folder to list secrets from")
-                    .required(false)
-                    .index(1),
-            )
-            .arg(Arg::with_name("tags")
-                    .short("t")
-                    .long("tags")
-                    .value_name("TAGS")
-                    .help("The tags to filter secrets by")
-                    .required(false)
-                    .index(2),
-            )
-            .arg(Arg::with_name("name_contains")
-                    .short("n")
-                    .long("name_contains")
-                    .value_name("NAME_CONTAINS")
-                    .help("The name to filter secrets by")
-                    .required(false)
-                    .index(3),
-            )
-            .arg(Arg::with_name("created_at")
-                    .short("c")
-                    .long("created_at")
-                    .value_name("CREATED_AT")
-                    .help("The date to filter secrets by")
-                    .required(false)
-                    .index(4),
-            )
-            .arg(Arg::with_name("size")
-                    .short("s")
-                    .long("size")
-                    .value_name("SIZE")
-                    .help("The number of secrets to return")
-                    .required(false)
-                    .index(5),
-            )
-            .arg(Arg::with_name("order")
-                    .short("o")
-                    .long("order")
-                    .value_name("ORDER")
-                    .help("The order to return secrets in")
-                    .required(false)
-                    .index(6),
-            )
-            .arg(Arg::with_name("order_by")
-                    .short("ob")
-                    .long("order_by")
-                    .value_name("ORDER_BY")
-                    .help("The order to return secrets in")
-                    .required(false)
-                    .index(7),
-            )
-            .arg(Arg::with_name("last")
-                    .short("l")
-                    .long("last")
-                    .value_name("LAST")
-                    .help("The last secret to return")
-                    .required(false)
-                    .index(8),
-            )
-            .arg(Arg::with_name("include_secrets")
-                    .short("i")
-                    .long("include_secrets")
-                    .value_name("INCLUDE_SECRETS")
-                    .help("Whether to include secrets in the response")
-                    .required(false)
-                    .index(9),
-            )
-    )
-    .subcommand(
-        App::new("delete")
-            .about("Delete a secret from the vault")
-            .arg(Arg::with_name("id")
-                    .short("i")
-                    .long("id")
-                    .value_name("SECRET_ID")
-                    .help("The name of the secret to delete")
-                    .required(true)
-                    .index(1),
-            )
-    )
+#[derive(Debug, Parser)]
+#[clap(author, about, version)]
+
+pub struct Keybinargs {
+    #[clap(subcommand)]
+    pub subcmd: SubCommand,
+}
+
+#[derive(Debug, Parser)]
+pub enum SubCommand {
+    #[clap(about = "Get a secret")]
+    Get(Get),
+    #[clap(about = "List secrets")]
+    List(List),
+    #[clap(about = "Store a secret")]
+    Store(Store),
+    #[clap(about = "Update a secret")]
+    Update(Update),
+    #[clap(about = "Delete a secret")]
+    Delete(Delete),
+}
+
+#[derive(Debug, Parser)]
+pub struct Get {
+    #[clap(short, long, help = "Secret ID")]
+    pub secret_id: String,
+}
+
+#[derive(Debug, Parser)]
+pub struct List {
+    #[clap(short, long, help = "Folder")]
+    pub folder: Option<String>,
+    #[clap(short, long, help = "Tags")]
+    pub tags: Option<String>,
+    #[clap(short, long, help = "Name Contains")]
+    pub name_contains: Option<String>,
+    #[clap(short, long, help = "Created At")]
+    pub created_at: Option<String>,
+    #[clap(short, long, help = "Size")]
+    pub size: Option<i32>,
+    #[clap(short, long, help = "Order")]
+    pub order: Option<String>,
+    #[clap(short, long, help = "Order By")]
+    pub order_by: Option<String>,
+    #[clap(short, long, help = "Last")]
+    pub last: Option<String>,
+    #[clap(short, long, help = "Include Secrets")]
+    pub include_secrets: Option<bool>,
+}
+
+#[derive(Debug, Parser)]
+pub struct Store {
+    #[clap(short, long, help = "Secret name")]
+    pub name: String,
+    #[clap(short, long, help = "Secret type")]
+    pub key_type: Option<String>,
+    #[clap(short, long, help = "Secret value")]
+    pub value: Option<String>,
+    #[clap(short, long, help = "Secret description")]
+    pub description: Option<String>,
+    #[clap(short, long, help = "Secret tags")]
+    pub tags: Option<String>,
+}
+
+#[derive(Debug, Parser)]
+
+pub struct Update {
+    #[clap(short, long, help = "Secret ID")]
+    pub secret_id: String,
+    #[clap(short, long, help = "Secret name")]
+    pub name: Option<String>,
+    #[clap(short, long, help = "Secret folder")]
+    pub folder: Option<String>,
+    #[clap(short, long, help = "Secret metadata")]
+    pub metadata: Option<String>,
+    #[clap(short, long, help = "Secret tags")]
+    pub tags: Option<String>,
+}
+
+#[derive(Debug, Parser)]
+
+pub struct Delete {
+    #[clap(short, long, help = "Secret ID")]
+    pub secret_id: String,
 }

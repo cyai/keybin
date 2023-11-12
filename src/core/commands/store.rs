@@ -24,7 +24,7 @@ pub async fn store(
     if let Some(secret_type) = _type{
         payload["type"] = json!(secret_type);
     }
-
+    
     if let Some(name) = _name {
         payload["name"] = json!(name);
     }
@@ -36,6 +36,8 @@ pub async fn store(
     if let Some(metadata) = _metadata {
         payload["metadata"] = json!(metadata);
     }
+
+    println!("Payload: {:?}", payload);
 
     let response = client
         .post(url)
