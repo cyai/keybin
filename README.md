@@ -56,7 +56,7 @@ Retrieve a secret from the vault.
 $ keybin get [NAME]
 ```
 
-This command will output the value associated with the specified secret.
+This command will copy the value associated with the specified secret to your clipboard.
 
 ### Listing All Secrets
 
