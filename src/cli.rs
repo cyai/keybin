@@ -20,6 +20,8 @@ pub enum SubCommand {
     Update(Update),
     #[clap(about = "Delete the secret from the vault")]
     Delete(Delete),
+    #[clap(about = "Get Secret ID from the name")]
+    GetId(GetId),
 }
 
 #[derive(Debug, Parser)]
@@ -84,4 +86,11 @@ pub struct Update {
 pub struct Delete {
     #[clap(short, long, help = "Secret ID", required = true)]
     pub secret_id: String,
+}
+
+
+#[derive(Debug, Parser)]
+pub struct GetId {
+    #[clap(short, long, help = "Secret name", required = true)]
+    pub name: String,
 }
