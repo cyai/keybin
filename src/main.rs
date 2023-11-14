@@ -15,7 +15,7 @@ use crate::core::{commands::{get::get, list::list, store::store, update::update,
 use serde_json::Value;
 use cli::{Keybinargs, SubCommand};
 use clap::Parser;
-
+use terminal_clipboard::set_string;
 
 #[tokio::main]
 async fn main(){
@@ -49,8 +49,13 @@ async fn main(){
                     println!("Deletion failed with a 500 error: Internal Server Error");
                 } else {
                     let result: Value = serde_json::from_str(&json_result).unwrap();
-                    let name = result["result"]["current_version"]["secret"].as_str().unwrap_or("-");
-                    println!("Secret: {:?}", name)
+                    let secret = result["result"]["current_version"]["secret"].as_str().unwrap_or("-");
+
+                    set_string(secret).unwrap();
+                    println!("Secret copied to clipboard");
+                    
+                    assert_eq!(secret, terminal_clipboard::get_string().unwrap());
+
                 } 
             }
         } else {
