@@ -2,7 +2,7 @@
 name = "keybin"
 description = "A simple cli tool that stores your secret api keys securly on Panega vault and retrives them whenever you require"
 repository = "https://github.com/cyai/keybin"
-authors = ["Vardhaman Kalloli <https://github.com/cyai" , "Gourav Khunger <https://github.com/gouravkhunger>"]
+authors = ["Vardhaman Kalloli <https://github.com/cyai"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/cyai/keybin#readme"
