@@ -36,6 +36,16 @@ Now, your `keybin` tool is configured with the Panega Vault API token, and you c
 
 ## Usage
 
+### Getting Help
+
+To access command-specific help or general information:
+
+```bash
+$ keybin help [COMMAND]
+```
+
+Replace `[COMMAND]` with the command you need help with.
+
 ### Adding a Secret
 
 Add a secret to the vault.
@@ -84,13 +94,7 @@ $ keybin update [NAME]
 
 Prompts will allow modifications to the secret's details.
 
-### Getting Help
 
-To access command-specific help or general information:
 
-```bash
-$ keybin help [COMMAND]
-```
-
-Replace `[COMMAND]` with the command you need help with.
-```
+### Crate Publish
+> This tool has been published on crate marketplace here: [keybin](https://crates.io/crates/keybin)
