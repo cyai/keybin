@@ -26,8 +26,8 @@ pub enum SubCommand {
 
 #[derive(Debug, Parser)]
 pub struct Get {
-    #[clap(short, long, help = "Secret ID", required = true)]
-    pub secret_id: String,
+    #[clap(short, long, help = "Secret Name", required = true)]
+    pub name: String,
 }
 
 #[derive(Debug, Parser)]

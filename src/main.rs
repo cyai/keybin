@@ -28,24 +28,35 @@ async fn main(){
     match args.subcmd {
 
     SubCommand::Get(_get)=>{
+
+        let result = db::get_secret_id(&_get.name).await;
+
+        if let Ok(id) = result {
+            let _id = id.clone();
+            println!("Secret ID: {:?}", &_id.unwrap().to_string());
         
-        let result = get(&_get.secret_id).await;
         
-        if let Ok(json_result) = result {
-            if json_result.contains("403") {
-                println!("Deletion failed with a 403 error: Forbidden");
-            } else if json_result.contains("400") {
-                println!("Deletion failed with a 400 error: Bad Request");
-            } else if json_result.contains("404") {
-                println!("Deletion failed with a 404 error: Not Found");
-            } else if json_result.contains("500") {
-                println!("Deletion failed with a 500 error: Internal Server Error");
-            } else {
-                let result: Value = serde_json::from_str(&json_result).unwrap();
-                let name = result["result"]["current_version"]["secret"].as_str().unwrap_or("-");
-                println!("{:?}", name)
-            } 
-        }
+            let result = get(&id.unwrap().to_string()).await;
+            
+            if let Ok(json_result) = result {
+                if json_result.contains("403") {
+                    println!("Deletion failed with a 403 error: Forbidden");
+                } else if json_result.contains("400") {
+                    println!("Deletion failed with a 400 error: Bad Request");
+                } else if json_result.contains("404") {
+                    println!("Deletion failed with a 404 error: Not Found");
+                } else if json_result.contains("500") {
+                    println!("Deletion failed with a 500 error: Internal Server Error");
+                } else {
+                    let result: Value = serde_json::from_str(&json_result).unwrap();
+                    let name = result["result"]["current_version"]["secret"].as_str().unwrap_or("-");
+                    println!("Secret: {:?}", name)
+                } 
+            }
+        } else {
+            println!("{:?}", result.unwrap_err());
+            println!("Error getting secret ID from the local data (Try Again by running store command!)");
+        } 
     },
 
     SubCommand::List(_list) => {
@@ -146,13 +157,13 @@ async fn main(){
                     for item in items{
                         let name = item["name"].as_str().unwrap_or("-");
                         let id = item["id"].as_str().unwrap_or("-");
-                        let secret_result = db::insert_secret(name, id).await;
+                        let _ = db::insert_secret(name, id).await;
 
-                        if let Ok(_) = secret_result {
-                         println!("Secret inserted into db");
-                        } else {
-                            println!("Error: {:?}", secret_result.unwrap_err());
-                        }
+                        // if let Ok(_) = secret_result {
+                        //  println!("Secret inserted into db");
+                        // } else {
+                        //     println!("Error: {:?}", secret_result.unwrap_err());
+                        // }
                     }
                 }
             }
