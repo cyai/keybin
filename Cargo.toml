@@ -1,8 +1,26 @@
 [package]
 name = "keybin"
+description = "A simple cli tool that stores your secret api keys securly on Panega vault and retrives them whenever you require"
+repository = "https://github.com/cyai/keybin"
+authors = ["Vardhaman Kalloli <https://github.com/cyai"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/cyai/keybin#readme"
+keywords = ["secrets", "api-keys", "secret-management", "panega"]
+categories = ["command-line-utilities", "command-line-interface"]
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+reqwest = { version = "0.11", features = ["json"] }
+futures = "0.3"
+tokio = { version = "1.12.0", features = ["full"] }
+serde_json = "1.0.108"
+dotenv = "0.15.0"
+serde = "1.0.192"
+clap = { version = "4.4.8", features = ["derive"] }
+rusqlite = "0.30.0"
+lazy_static = "1.4.0"
+
