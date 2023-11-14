@@ -54,12 +54,12 @@ pub struct List {
 
 #[derive(Debug, Parser)]
 pub struct Store {
-    #[clap(short, long, help = "Secret name", required = true)]
-    pub name: String,
+    #[clap(short, long, help = "Secret name", required = false)]
+    pub name: Option<String>,
     #[clap(short, long, help = "Secret type", required = false)]
     pub key_type: Option<String>,
-    #[clap(short, long, help = "Secret value", required = false)]
-    pub value: Option<String>,
+    #[clap(short, long, help = "Secret value", required = true)]
+    pub value: String,
     #[clap(short, long, help = "Secret description", required = false)]
     pub description: Option<String>,
     #[clap(short, long, help = "Secret tags", required = false)]

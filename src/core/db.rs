@@ -14,7 +14,7 @@ pub async fn create_db() -> Result<()> {
     let conn = CONNECTION.lock().expect("Failed to obtain lock");
     conn.execute(
         "CREATE TABLE IF NOT EXISTS secrets (
-            name TEXT NOT NULL PRIMARY KEY,
+            name TEXT PRIMARY KEY,
             id TEXT NOT NULL
         )",
         [],
@@ -23,6 +23,7 @@ pub async fn create_db() -> Result<()> {
 }
 
 pub async fn insert_secret(name: &str, id: &str) -> Result<()> {
+    println!("Name: {:?} \n ID: {:?}", name, id);
     let conn = CONNECTION.lock().expect("Failed to obtain lock");
     conn.execute(
         "INSERT INTO secrets (name, id) VALUES (?1, ?2)",
@@ -36,10 +37,14 @@ pub async fn get_secret_id(name: &str) -> Result<Option<String>, rusqlite::Error
 
     let mut stmt = conn.prepare("SELECT id FROM secrets WHERE name = ?1")?;
 
+
     let mut rows = stmt.query(params![name])?;
+
+
 
     if let Some(row) = rows.next()? {
         let id: String = row.get(0)?;
+
         Ok(Some(id))
     } else {
         Ok(None)

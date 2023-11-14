@@ -104,9 +104,9 @@ async fn main(){
 
     SubCommand::Store(_store) => {
         
-        let secret = _store.name;
+        let secret = _store.value;
         let key_type = _store.key_type;
-        let name = _store.value;
+        let name = _store.name;
         let description = _store.description;
         let tags = _store.tags;
 
@@ -131,7 +131,7 @@ async fn main(){
             } else if json_result.contains("500") {
                 println!("Deletion failed with a 500 error: Internal Server Error");
             }
-            else {
+            else {  
                 let result: Value = serde_json::from_str(&json_result).unwrap();        
                 println!("Status: {:?}", result["status"].as_str().unwrap_or("-"));
                 println!("Summary: {:?}", result["summary"].as_str().unwrap_or("-"));
