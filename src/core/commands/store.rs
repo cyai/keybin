@@ -1,6 +1,6 @@
 use reqwest;
 use serde_json::{json, Value};
-use dotenv::dotenv;
+// use dotenv::dotenv;
 
 pub async fn store(
     _secret: String, 
@@ -8,12 +8,13 @@ pub async fn store(
     _name: Option<String>, 
     _folder: Option<String>, 
     _metadata: Option<String>,
+    _access_token: &str
 ) -> Result<String, reqwest::Error> {
-    dotenv().ok();
+    // dotenv().ok();
 
     let url = "https://vault.aws.us.pangea.cloud/v1/secret/store";
 
-    let access_token = std::env::var("VAULT_ACCESS_TOKEN").expect("VAULT_ACCESS_TOKEN must be set");
+    // let access_token = std::env::var("VAULT_ACCESS_TOKEN").expect("VAULT_ACCESS_TOKEN must be set");
 
     let client = reqwest::Client::new();
 
@@ -41,7 +42,7 @@ pub async fn store(
 
     let response = client
         .post(url)
-        .header("Authorization", format!("Bearer {}", access_token))
+        .header("Authorization", format!("Bearer {}", _access_token))
         .header("Content-Type",  "application/json")
         .json(&payload)
         .send()

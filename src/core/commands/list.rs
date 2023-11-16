@@ -1,6 +1,6 @@
 use reqwest;
 use serde_json::{json, Value};
-use dotenv::dotenv;
+// use dotenv::dotenv;
 
 pub async fn list(
     _folder: Option<String>,
@@ -12,14 +12,15 @@ pub async fn list(
     _order_by: Option<String>,
     _last: Option<String>,
     _include_secrets: Option<bool>,
+    _access_token: &str,
 ) -> Result<String, reqwest::Error> {
-    dotenv().ok();
+    // dotenv().ok();
 
     let url = "https://vault.aws.us.pangea.cloud/v1/list";
 
     let client = reqwest::Client::new();
 
-    let access_token = std::env::var("VAULT_ACCESS_TOKEN").expect("VAULT_ACCESS_TOKEN must be set");
+    // let access_token = std::env::var("VAULT_ACCESS_TOKEN").expect("VAULT_ACCESS_TOKEN must be set");
 
     let mut payload = json!({});
 
@@ -61,7 +62,7 @@ pub async fn list(
 
     let response = client
         .post(url)
-        .header("Authorization", format!("Bearer {}", access_token))
+        .header("Authorization", format!("Bearer {}", _access_token))
         .header("Content-Type", "application/json")
         .json(&payload)
         .send()

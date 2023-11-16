@@ -22,6 +22,8 @@ pub enum SubCommand {
     Delete(Delete),
     #[clap(about = "Get Secret ID from the name")]
     GetId(GetId),
+    #[clap(about = "Set Panega Vault API Key")]
+    Init(Init),
 }
 
 #[derive(Debug, Parser)]
@@ -93,4 +95,10 @@ pub struct Delete {
 pub struct GetId {
     #[clap(short, long, help = "Secret name", required = true)]
     pub name: String,
+}
+
+#[derive(Debug, Parser)]
+pub struct Init {
+    #[clap(short, long, help = "Panega Vault API Key", required = true)]
+    pub key: String,
 }
